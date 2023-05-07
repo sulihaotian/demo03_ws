@@ -15,8 +15,12 @@ bool donums(server_client::addints::Request &request,
             server_client::addints::Response &response)
 {
     // 1.处理请求
-
+    int num1 = request.num1;
+    int num2 = request.num2;
+    ROS_INFO("受到的数据  %d  %d",num1,num2);
     // 2.处理相应
+    response.sum= num1+num2;
+    ROS_INFO("求和结果  %d",response.sum);
     return true;
 }
 
@@ -24,6 +28,8 @@ bool donums(server_client::addints::Request &request,
 
 int main(int argc, char *argv[])
 {
+    setlocale(LC_ALL,"");
+
         // 1.头文件
         // 2.初始化ros节点
     ros::init(argc,argv,"baojie");//节点名称保证唯一
@@ -32,7 +38,8 @@ int main(int argc, char *argv[])
         // 4.创建服务对象
     ros::ServiceServer server = jb.advertiseService("addints"/*话题名称*/
                                                     ,donums/*回调函数 返回值是bool型*/);
-        // 5.处理请求并响应
+    ROS_INFO("服务器已启动");
+        // 5.处理请求并响应-->回调函数
         // 6.spin()
     ros::spin();
     return 0;
